@@ -14,6 +14,7 @@ import * as sns from "aws-cdk-lib/aws-sns";
 import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as subs from "aws-cdk-lib/aws-sns-subscriptions";
 
+
 export class ExamStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -40,6 +41,9 @@ export class ExamStack extends cdk.Stack {
         REGION: "eu-west-1",
       },
     });
+
+    // 授予 Lambda 函数访问 DynamoDB 表的权限
+    table.grantReadData(question1Fn);
 
     new custom.AwsCustomResource(this, "moviesddbInitData", {
       onCreate: {
@@ -84,6 +88,26 @@ export class ExamStack extends cdk.Stack {
 
     const anEndpoint = api.root.addResource("patha");
 
+    // 添加新的 GET 端点
+    const crewResource = api.root.addResource("crew");
+    const moviesResource = crewResource.addResource("movies");
+    const movieResource = moviesResource.addResource("{movieId}");
+    movieResource.addMethod(
+      "GET",
+      new apig.LambdaIntegration(question1Fn, {
+        proxy: true,
+        requestParameters: {
+          "integration.request.path.movieId": "method.request.path.movieId",
+          "integration.request.querystring.role": "method.request.querystring.role",
+        },
+      }),
+      {
+        requestParameters: {
+          "method.request.path.movieId": true,
+          "method.request.querystring.role": true,
+        },
+      }
+    );
 
     // ==================================
     // Question 2 - Event-Driven architecture

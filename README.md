@@ -25,3 +25,4 @@ Examine all aspects of the codebase before the exam, but do not change it until 
 ## push information :
 1. wrong message :“Revised new endpoint to include query string”
 2. finish Q1A
+3. revise Q1A (Add parameters)
