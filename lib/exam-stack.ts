@@ -171,5 +171,9 @@ export class ExamStack extends cdk.Stack {
       })
     );
 
+    // Lambda Y needs permission to send messages to Queue B
+    queueB.grantSendMessages(lambdaYFn);
+    lambdaYFn.addEnvironment("QUEUE_B_URL", queueB.queueUrl);
+
   }
 }

@@ -30,3 +30,4 @@ Examine all aspects of the codebase before the exam, but do not change it until 
 5. Forgot to save the README.md
 6. finish Q2A (Implement the architecture shown in the picture)
 7. finish Q2B (Restrict the country in which the message is located)
+8. finish Q2C (Confirm the conditions for sending information by filtering the type of information ``email``.)
