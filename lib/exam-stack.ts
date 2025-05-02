@@ -69,6 +69,18 @@ export class ExamStack extends cdk.Stack {
         allowOrigins: ["*"],
       },
     });
+     // Movies endpoint
+    const moviesEndpoint = api.root.addResource("movies");
+    moviesEndpoint.addMethod(
+      "GET",
+      new apig.LambdaIntegration(question1Fn, { proxy: true })
+    );
+    // Detail movie endpoint
+    const specificMovieEndpoint = moviesEndpoint.addResource("{movieId}");
+    specificMovieEndpoint.addMethod(
+      "GET",
+      new apig.LambdaIntegration(question1Fn, { proxy: true })
+    );
 
     const anEndpoint = api.root.addResource("patha");
 
