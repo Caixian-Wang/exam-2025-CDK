@@ -42,7 +42,6 @@ export class ExamStack extends cdk.Stack {
       },
     });
 
-    // 授予 Lambda 函数访问 DynamoDB 表的权限
     table.grantReadData(question1Fn);
 
     new custom.AwsCustomResource(this, "moviesddbInitData", {
@@ -87,8 +86,6 @@ export class ExamStack extends cdk.Stack {
     );
 
     const anEndpoint = api.root.addResource("patha");
-
-    // 添加新的 GET 端点
     const crewResource = api.root.addResource("crew");
     const moviesResource = crewResource.addResource("movies");
     const movieResource = moviesResource.addResource("{movieId}");
@@ -104,7 +101,7 @@ export class ExamStack extends cdk.Stack {
       {
         requestParameters: {
           "method.request.path.movieId": true,
-          "method.request.querystring.role": true,
+          "method.request.querystring.role": false,
         },
       }
     );
